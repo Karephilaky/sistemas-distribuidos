@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos de Usuario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Libros Favoritos</h1>
+
+    <!-- Formulario para añadir un nuevo favorito -->
+    <form action="{{ url_for('agregar_favorito', id_usuario=id_usuario) }}" method="post">
+        <label for="titulo_libro">Título del Libro:</label>
+        <input type="text" id="titulo_libro" name="titulo_libro" required>
+        
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" name="autor" required>
+        
+        <button type="submit">Añadir Favorito</button>
+    </form>
+
+    <!-- Lista de favoritos -->
+    <h2>Mis Favoritos</h2>
+    {% if favoritos %}
+        <ul>
+            {% for favorito in favoritos %}
+            <li>
+                <strong>{{ favorito['titulo_libro'] }}</strong> por {{ favorito['autor'] }}
+                <form action="{{ url_for('eliminar_favorito', id_usuario=id_usuario, id_favorito=favorito['id_favorito']) }}" method="post" style="display:inline;">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes libros favoritos aún.</p>
+    {% endif %}
+</body>
+</html>
